@@ -1,21 +1,25 @@
 import mongoose from 'mongoose';
 
-/**
- * Connect to MongoDB database
- */
+let cached = globalThis.__mongooseCache || { conn: null, promise: null };
+globalThis.__mongooseCache = cached;
+
 export const connectDB = async () => {
-  try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/ecommerce_db';
-    const conn = await mongoose.connect(mongoUri, {
-      serverSelectionTimeoutMS: 5000,
+  if (cached.conn) return cached.conn;
+
+  const mongoUri = process.env.MONGODB_URI;
+  if (!mongoUri) throw new Error('MONGODB_URI is not configured');
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 10000,
     });
-    console.log(`[MongoDB] Connected successfully: ${conn.connection.host}`);
-    return conn;
+  }
+
+  try {
+    cached.conn = await cached.promise;
+    return cached.conn;
   } catch (error) {
-    console.error(`[MongoDB] Connection error: ${error.message}`);
-    // In dev mode, do not hard-crash the whole app if mongo is offline so developer can see clear warning
-    if (process.env.NODE_ENV === 'production') {
-      process.exit(1);
-    }
+    cached.promise = null;
+    throw error;
   }
 };

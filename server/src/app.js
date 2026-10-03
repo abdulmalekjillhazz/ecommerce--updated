@@ -45,13 +45,23 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
 
+// API landing page
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    service: 'E-Commerce Backend REST API',
+    version: 'v1',
+    health: '/api/v1/health',
+  });
+});
+
 // Health Check Endpoint
 app.get('/api/v1/health', (req, res) => {
   res.status(200).json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
     service: 'E-Commerce Backend REST API',
-    port: process.env.PORT || 5000,
+    environment: process.env.NODE_ENV || 'development',
   });
 });
 

@@ -37,7 +37,7 @@ export const generateRefreshToken = (user) => {
  */
 export const setAuthCookies = (res, accessToken, refreshToken) => {
   const isProd = process.env.NODE_ENV === 'production';
-  const sameSite = process.env.COOKIE_SAME_SITE || 'lax';
+  const sameSite = process.env.COOKIE_SAME_SITE || (isProd ? 'none' : 'lax');
 
   const cookieOptions = {
     httpOnly: true,
@@ -64,7 +64,7 @@ export const setAuthCookies = (res, accessToken, refreshToken) => {
  */
 export const clearAuthCookies = (res) => {
   const isProd = process.env.NODE_ENV === 'production';
-  const sameSite = process.env.COOKIE_SAME_SITE || 'lax';
+  const sameSite = process.env.COOKIE_SAME_SITE || (isProd ? 'none' : 'lax');
 
   const cookieOptions = {
     httpOnly: true,
