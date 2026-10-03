@@ -1,0 +1,20 @@
+{
+  "name": "fullstack-ecommerce-platform",
+  "version": "1.0.0",
+  "description": "Decoupled Modern E-Commerce Platform with Next.js 14 Client (Port 3000) & Node.js Express REST API (Port 5000)",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n \"SERVER:5000,CLIENT:3000\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "start": "concurrently -n \"SERVER:5000,CLIENT:3000\" -c \"bgBlue.bold,bgGreen.bold\" \"npm start --prefix server\" \"npm start --prefix client\"",
+    "start:server": "npm start --prefix server",
+    "start:client": "npm start --prefix client",
+    "build:client": "npm run build --prefix client",
+    "seed:server": "npm run seed --prefix server",
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
