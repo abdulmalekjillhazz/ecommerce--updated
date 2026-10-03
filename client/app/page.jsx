@@ -8,7 +8,6 @@ async function getFeaturedProducts() {
   try {
     const res = await fetch(`${apiUrl}/products?isFeatured=true&limit=8`, {
       next: { revalidate: 60 },
-      cache: 'no-store',
     });
     if (!res.ok) return [];
     const json = await res.json();

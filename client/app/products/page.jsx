@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { Suspense, useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import ProductCard from '../../components/product/ProductCard.jsx';
 import ProductFilters from '../../components/product/ProductFilters.jsx';
 import api from '../../lib/api.js';
 import { Search, Loader2, PackageOpen } from 'lucide-react';
 
-export default function ProductsPage() {
+function ProductsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -200,5 +200,20 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-96 flex-col items-center justify-center space-y-3" aria-busy="true">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          <p className="text-xs font-semibold text-slate-500">Loading catalog...</p>
+        </div>
+      }
+    >
+      <ProductsPageContent />
+    </Suspense>
   );
 }
